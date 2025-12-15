@@ -1298,6 +1298,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.25.5.tgz#7fc114af5f6563f19f73324b5d5ff36ece0803d1"
   integrity sha512-TXv6YnJ8ZMVdX+SXWVBo/0p8LTcrUYngpWjvm91TMjjBQii7Oz11Lw5lbDV5Y0TzuhSJHwiH4hEtC1I42mMS0g==
 
+"@fontsource/inter@^5.0.18":
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.2.8.tgz#10c95d877d972c7de5bd4592309d42fb6a5e1a5b"
+  integrity sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==
+
 "@isaacs/balanced-match@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz#3081dadbc3460661b751e7591d7faea5df39dd29"
@@ -1944,7 +1949,7 @@
     chalk "3.0.0"
     find-pkg "2.0.0"
 
-"@module-federation/modern-js@^0.2.8":
+"@module-federation/modern-js@0.21.6":
   version "0.21.6"
   resolved "https://registry.yarnpkg.com/@module-federation/modern-js/-/modern-js-0.21.6.tgz#bba5604d2f8fa3ec6c4d83a051b3c3df5cb7071b"
   integrity sha512-yn2dmqTg1UbFMGXXbN+M+EQqx3Ddim6RdRu/UKndgeExCeG7Qfk9CxfTxrK/lRQ08/Zkhh0VMMe5MOzosHLFCg==

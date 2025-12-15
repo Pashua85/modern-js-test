@@ -2,7 +2,7 @@
   "name": "modern-mf-sandbox",
   "private": true,
   "scripts": {
-    "setup": "yarn install && yarn --cwd host install && yarn --cwd remote install",
+    "setup": "yarn install --non-interactive && yarn --cwd host install --non-interactive && yarn --cwd remote install --non-interactive",
     "dev": "concurrently \"yarn --cwd remote dev\" \"yarn --cwd host dev\"",
     "dev:host": "yarn --cwd host dev",
     "dev:remote": "yarn --cwd remote dev",

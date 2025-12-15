@@ -1,11 +1,13 @@
+import { Typography } from '@mui/material';
+
 type UserNameProps = {
   userId?: string;
 };
 
 const UserName = ({ userId }: UserNameProps) => (
-  <p style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+  <Typography variant="h5" component="p" sx={{ fontWeight: 700 }}>
     Пользователь {userId ?? 'без ID'}
-  </p>
+  </Typography>
 );
 
 export default UserName;
