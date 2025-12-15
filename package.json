@@ -9,7 +9,9 @@
     "dev:remote": "yarn --cwd remote dev",
     "build": "yarn --cwd remote build && yarn --cwd host build",
     "serve:remote:prod": "node scripts/static-server.js remote/dist 8081",
-    "start:prod": "yarn build && concurrently \"node scripts/static-server.js remote/dist 8081\" \"PORT=8080 REMOTE_BASE_URL=http://127.0.0.1:8081 NODE_ENV=production yarn --cwd host start\""
+    "start:prod:ssr": "yarn build && concurrently \"REMOTE_PUBLIC_URL=http://127.0.0.1:8081 PORT=8081 NODE_ENV=production yarn --cwd remote start\" \"PORT=8080 REMOTE_BASE_URL=http://127.0.0.1:8081 NODE_ENV=production yarn --cwd host start\"",
+    "start:prod:static": "yarn build && concurrently \"node scripts/static-server.js remote/dist 8081\" \"PORT=8080 REMOTE_BASE_URL=http://127.0.0.1:8081 NODE_ENV=production yarn --cwd host start\"",
+    "start:prod": "yarn start:prod:ssr"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
