@@ -4,9 +4,12 @@
   "scripts": {
     "setup": "yarn install --non-interactive && yarn --cwd host install --non-interactive && yarn --cwd remote install --non-interactive",
     "dev": "concurrently \"yarn --cwd remote dev\" \"yarn --cwd host dev\"",
+    "dev:prod": "concurrently \"HOST=127.0.0.1 PORT=8081 NODE_ENV=production yarn --cwd remote dev\" \"PORT=8080 REMOTE_BASE_URL=http://127.0.0.1:8081 NODE_ENV=production yarn --cwd host dev\"",
     "dev:host": "yarn --cwd host dev",
     "dev:remote": "yarn --cwd remote dev",
-    "build": "yarn --cwd remote build && yarn --cwd host build"
+    "build": "yarn --cwd remote build && yarn --cwd host build",
+    "serve:remote:prod": "node scripts/static-server.js remote/dist 8081",
+    "start:prod": "yarn build && concurrently \"node scripts/static-server.js remote/dist 8081\" \"PORT=8080 REMOTE_BASE_URL=http://127.0.0.1:8081 NODE_ENV=production yarn --cwd host start\""
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

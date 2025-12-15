@@ -6,7 +6,7 @@
     "dev": "modern dev",
     "build": "modern build",
     "start": "modern start",
-    "serve": "modern serve",
+    "serve": "node ../scripts/static-server.js dist 8081",
     "new": "modern new",
     "lint": "biome check",
     "prepare": "simple-git-hooks",

@@ -1,25 +1,37 @@
 import { peekCache } from '@/lib/userClient';
 import { getUserName } from '@/services/userService';
 import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+
+const resolvedNames = new Map<string, string>();
+const pendingRequests = new Map<string, Promise<string>>();
+
+function readUserName(userId: string) {
+  if (resolvedNames.has(userId)) {
+    const name = resolvedNames.get(userId)!;
+    resolvedNames.delete(userId);
+    return name;
+  }
+
+  let pending = pendingRequests.get(userId);
+  if (!pending) {
+    pending = getUserName(userId).then((name) => {
+      pendingRequests.delete(userId);
+      resolvedNames.set(userId, name);
+      return name;
+    });
+    pendingRequests.set(userId, pending);
+  }
+
+  throw pending;
+}
 
 type UserNameProps = {
   userId: string;
 };
 
-const UserName = ({ userId }: UserNameProps) => { 
-  const [name, setName] = useState<string>('(loading...)');
+const UserName = ({ userId }: UserNameProps) => {
+  const name = readUserName(userId);
 
-  useEffect(() => {
-    let alive = true;
-    getUserName(userId).then((n) => {
-      if (alive) setName(n);
-    });
-    return () => {
-      alive = false;
-    };
-  }, [userId]);
-  
   return (
     <div style={{ border: '1px solid #ccc', padding: 12 }}>
       <div>Requested userId: <b>{userId}</b></div>
