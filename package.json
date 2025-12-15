@@ -1,0 +1,14 @@
+{
+  "name": "modern-mf-sandbox",
+  "private": true,
+  "scripts": {
+    "setup": "yarn install && yarn --cwd host install && yarn --cwd remote install",
+    "dev": "concurrently \"yarn --cwd remote dev\" \"yarn --cwd host dev\"",
+    "dev:host": "yarn --cwd host dev",
+    "dev:remote": "yarn --cwd remote dev",
+    "build": "yarn --cwd remote build && yarn --cwd host build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
