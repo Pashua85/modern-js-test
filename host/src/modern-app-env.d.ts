@@ -2,12 +2,12 @@
 /// <reference types='@modern-js/runtime/types' />
 /// <reference types='@modern-js/runtime/types/router' />
 
-declare module 'remote/UserInfo' {
+declare module 'remote/UserName' {
   import type { ComponentType } from 'react';
 
-  const UserInfo: ComponentType<{
+  const UserName: ComponentType<{
     userId?: string;
   }>;
 
-  export default UserInfo;
+  export default UserName;
 }
