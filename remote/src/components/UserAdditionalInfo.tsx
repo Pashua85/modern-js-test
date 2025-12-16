@@ -25,21 +25,21 @@ function readUserName(userId: string, locale: string) {
   throw pending;
 }
 
-type UserNameProps = {
+type UserAdditionalInfoProps = {
   userId: string;
   locale: string;
 };
 
-const UserName = ({ userId, locale }: UserNameProps) => {
+const UserAdditionalInfo = ({ userId, locale }: UserAdditionalInfoProps) => {
   const name = readUserName(userId, locale);
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: 12 }}>
-      <div>Requested userId: <b>{userId}</b></div>
-      <div>Requested locale: <b>{locale}</b></div>
-      <div>Resolved name: <b>{name}</b></div>
+    <div style={{ border: '1px dashed #666', padding: 12 }}>
+      <div>Доп. панель пользователя <b>{userId}</b></div>
+      <div>Locale запроса: <b>{locale}</b></div>
+      <div>В кеше лежит: <b>{name}</b></div>
     </div>
   );
 };
 
-export default UserName;
+export default UserAdditionalInfo;

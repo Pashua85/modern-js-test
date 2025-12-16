@@ -23,10 +23,5 @@ export class UserClient {
   }
 }
 
-export function peekCache(userId: string) {
-  // для отладки/демо
-  return (userClient as any).cache?.get?.(userId);
-}
-
 // ❌ BUG ROOT: singleton на процесс
 export const userClient = new UserClient();

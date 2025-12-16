@@ -12,3 +12,14 @@ declare module 'remote/UserName' {
 
   export default UserName;
 }
+
+declare module 'remote/UserAdditionalInfo' {
+  import type { ComponentType } from 'react';
+
+  const UserAdditionalInfo: ComponentType<{
+    userId: string;
+    locale: string;
+  }>;
+
+  export default UserAdditionalInfo;
+}
