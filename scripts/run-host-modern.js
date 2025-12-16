@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { spawn } = require('child_process');
+const path = require('path');
 
 const [command, ...restArgs] = process.argv.slice(2);
 
@@ -37,7 +38,36 @@ if (!env.REMOTE_BASE_URL) {
   env.REMOTE_BASE_URL = `http://${publicHost}:${remotePort}`;
 }
 
-const child = spawn('modern', [command, ...restArgs], {
+const resolveModernBin = () => {
+  const searchRoots = [
+    process.cwd(),
+    __dirname,
+    path.join(__dirname, '..', 'host'),
+  ];
+
+  for (const root of searchRoots) {
+    try {
+      return require.resolve('@modern-js/app-tools/bin/modern.js', {
+        paths: [root],
+      });
+    } catch {
+      // ignore resolution errors so we can try the next root
+    }
+  }
+
+  return null;
+};
+
+const modernBin = resolveModernBin();
+
+if (!modernBin) {
+  console.error(
+    '[run-host-modern] Unable to locate the @modern-js/app-tools binary. Make sure dependencies are installed.',
+  );
+  process.exit(1);
+}
+
+const child = spawn(process.execPath, [modernBin, command, ...restArgs], {
   stdio: 'inherit',
   env,
 });
