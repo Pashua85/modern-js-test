@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { spawn } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 
 const [command, ...restArgs] = process.argv.slice(2);
@@ -43,15 +44,59 @@ const resolveModernBin = () => {
     process.cwd(),
     __dirname,
     path.join(__dirname, '..', 'host'),
+    path.join(__dirname, '..'),
   ];
 
-  for (const root of searchRoots) {
+  const tryResolve = root => {
     try {
-      return require.resolve('@modern-js/app-tools/bin/modern.js', {
+      const entry = require.resolve('@modern-js/app-tools', {
         paths: [root],
       });
+      let dir = path.dirname(entry);
+      const stop = path.parse(dir).root;
+
+      while (dir && dir !== stop) {
+        const packageJsonPath = path.join(dir, 'package.json');
+        if (fs.existsSync(packageJsonPath)) {
+          try {
+            const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+            if (pkg && pkg.name === '@modern-js/app-tools') {
+              const binPath = path.join(dir, 'bin', 'modern.js');
+              if (fs.existsSync(binPath)) {
+                return binPath;
+              }
+              return null;
+            }
+          } catch {
+            // ignore JSON errors
+          }
+        }
+        dir = path.dirname(dir);
+      }
     } catch {
-      // ignore resolution errors so we can try the next root
+      // unable to resolve from this root
+    }
+
+    return null;
+  };
+
+  for (const root of searchRoots) {
+    const resolved = tryResolve(root);
+    if (resolved) {
+      return resolved;
+    }
+  }
+
+  // last resort: look for node_modules/.bin/modern
+  for (const root of searchRoots) {
+    const candidate = path.join(
+      root,
+      'node_modules',
+      '.bin',
+      process.platform === 'win32' ? 'modern.cmd' : 'modern',
+    );
+    if (fs.existsSync(candidate)) {
+      return candidate;
     }
   }
 
