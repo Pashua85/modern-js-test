@@ -23,4 +23,6 @@ export class UserClient {
   }
 }
 
-export const userClient = new UserClient();
+export function createUserClient() {
+  return new UserClient();
+}

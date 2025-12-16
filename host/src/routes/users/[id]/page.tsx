@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy } from 'react';
 import { Link, useParams, useSearchParams } from '@modern-js/runtime/router';
 import {
   Box,
@@ -11,7 +11,9 @@ import {
 import { AdditionalInfoBlock } from '@/components/AdditionalInfoBlock';
 
 const RemoteUserName = lazy(() => import('remote/UserName'));
-
+const RemoteUserClientProvider = lazy(
+  () => import('remote/UserClientProvider'),
+);
 
 const UsersPage = () => {
   const params = useParams<{ id?: string }>();
@@ -43,14 +45,27 @@ const UsersPage = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <CircularProgress size={18} />
                 <Typography variant="body2">
-                  Загружаем данные из remote...
+                  Подготавливаем remote контекст...
                 </Typography>
               </Box>
             }
           >
-            <RemoteUserName userId={userId} locale={locale} />
+            <RemoteUserClientProvider>
+              <Suspense
+                fallback={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CircularProgress size={18} />
+                    <Typography variant="body2">
+                      Загружаем данные из remote...
+                    </Typography>
+                  </Box>
+                }
+              >
+                <RemoteUserName userId={userId} locale={locale} />
+              </Suspense>
+              <AdditionalInfoBlock userId={userId} locale={locale} />
+            </RemoteUserClientProvider>
           </Suspense>
-          <AdditionalInfoBlock userId={userId} locale={locale} />
         </CardContent>
       </Card>
     </Box>

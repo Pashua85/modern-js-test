@@ -12,6 +12,7 @@ export default moduleFederationPlugin({
     exposes: {
       './UserName': './src/components/UserName.tsx',
       './UserAdditionalInfo': './src/components/UserAdditionalInfo.tsx',
+      './UserClientProvider': './src/providers/UserClientProvider.tsx',
     },
     shared: sharedDependencies,
   },

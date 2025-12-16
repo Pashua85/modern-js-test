@@ -1,48 +1,15 @@
 import { Box, Typography } from '@mui/material';
-import { getUserName } from '@/services/userService';
-
-const resolvedNames = new Map<string, string>();
-const pendingRequests = new Map<string, Promise<string>>();
-
-/**
- * Ручная реализация «ресурса» для React Suspense:
- * возвращает закэшированное значение или бросает Promise загрузки,
- * чтобы Suspense показал fallback и повторил рендер после завершения.
- */
-function readUserName(userId: string, locale: string) {
-  const cacheKey = `${userId}:${locale}`;
-
-  if (resolvedNames.has(cacheKey)) {
-    const name = resolvedNames.get(cacheKey)!;
-    resolvedNames.delete(cacheKey);
-    return name;
-  }
-
-  let pending = pendingRequests.get(cacheKey);
-  if (!pending) {
-    pending = getUserName(userId, locale).then((name) => {
-      pendingRequests.delete(cacheKey);
-      resolvedNames.set(cacheKey, name);
-      return name;
-    });
-    pendingRequests.set(cacheKey, pending);
-  }
-
-  throw pending;
-}
+import { useUserClient } from '@/context/UserClientContext';
+import { readUserName } from '@/utils/userNameResource';
 
 type UserAdditionalInfoProps = {
   userId: string;
   locale: string;
-  showAdditional?: boolean;
 };
 
-const UserAdditionalInfo = ({
-  userId,
-  locale,
-  showAdditional,
-}: UserAdditionalInfoProps) => {
-  const name = readUserName(userId, locale);
+const UserAdditionalInfo = ({ userId, locale }: UserAdditionalInfoProps) => {
+  const client = useUserClient();
+  const name = readUserName(client, userId, locale);
 
   return (
     <Box
@@ -54,18 +21,14 @@ const UserAdditionalInfo = ({
         bgcolor: 'background.default',
       }}
     >
-      <Typography variant='h4'>
-        Additional Info
-      </Typography>
+      <Typography variant="h4">Additional Info</Typography>
       <Typography>
         Requested userId: <b>{userId}</b>
       </Typography>
       <Typography>
         Requested locale: <b>{locale}</b>
       </Typography>
-      <Typography sx={{ mt: 1, fontWeight: 600 }}>
-        Resolved name: {name}
-      </Typography>
+      <Typography sx={{ mt: 1, fontWeight: 600 }}>Resolved name: {name}</Typography>
     </Box>
   );
 };

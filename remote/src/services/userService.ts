@@ -1,5 +1,9 @@
-import { userClient } from '../lib/userClient';
+import type { UserClient } from '../lib/userClient';
 
-export async function getUserName(userId: string, lang: string) {
-  return userClient.getUserName(userId, lang);
+export async function getUserName(
+  client: UserClient,
+  userId: string,
+  lang: string,
+) {
+  return client.getUserName(userId, lang);
 }

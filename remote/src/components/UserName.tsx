@@ -1,35 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { getUserName } from '@/services/userService';
-
-const resolvedNames = new Map<string, string>();
-const pendingRequests = new Map<string, Promise<string>>();
-
-/**
- * Ручная реализация «ресурса» для React Suspense:
- * возвращает закэшированное значение или бросает Promise загрузки,
- * чтобы Suspense показал fallback и повторил рендер после завершения.
- */
-function readUserName(userId: string, locale: string) {
-  const cacheKey = `${userId}:${locale}`;
-
-  if (resolvedNames.has(cacheKey)) {
-    const name = resolvedNames.get(cacheKey)!;
-    resolvedNames.delete(cacheKey);
-    return name;
-  }
-
-  let pending = pendingRequests.get(cacheKey);
-  if (!pending) {
-    pending = getUserName(userId, locale).then((name) => {
-      pendingRequests.delete(cacheKey);
-      resolvedNames.set(cacheKey, name);
-      return name;
-    });
-    pendingRequests.set(cacheKey, pending);
-  }
-
-  throw pending;
-}
+import { useUserClient } from '@/context/UserClientContext';
+import { readUserName } from '@/utils/userNameResource';
 
 type UserNameProps = {
   userId: string;
@@ -37,7 +8,8 @@ type UserNameProps = {
 };
 
 const UserName = ({ userId, locale }: UserNameProps) => {
-  const name = readUserName(userId, locale);
+  const client = useUserClient();
+  const name = readUserName(client, userId, locale);
 
   return (
     <Box

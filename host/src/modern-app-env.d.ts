@@ -23,3 +23,13 @@ declare module 'remote/UserAdditionalInfo' {
 
   export default UserAdditionalInfo;
 }
+
+declare module 'remote/UserClientProvider' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  const UserClientProvider: ComponentType<{
+    children: ReactNode;
+  }>;
+
+  export default UserClientProvider;
+}
