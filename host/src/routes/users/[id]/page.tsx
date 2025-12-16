@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { lazy, useState } from 'react';
 import { Link, useParams, useSearchParams } from '@modern-js/runtime/router';
 import {
   Box,
@@ -6,7 +6,8 @@ import {
   Button,
   Card,
   CardContent,
-  CircularProgress,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 
 const RemoteUserName = lazy(() => import('remote/UserName'));
@@ -16,6 +17,7 @@ const UsersPage = () => {
   const userId = params?.id ?? 'unknown';
   const [searchParams] = useSearchParams();
   const locale = searchParams.get('locale') ?? 'en';
+  const [showAdditional, setShowAdditional] = useState(false);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -23,9 +25,6 @@ const UsersPage = () => {
         <div>
           <Typography variant="h4" component="h1">
             Профиль пользователя {userId}
-          </Typography>
-          <Typography color="text.secondary">
-            Компонент имени подтягивается из remote приложения.
           </Typography>
         </div>
         <Button
@@ -38,17 +37,21 @@ const UsersPage = () => {
         </Button>
       </Box>
       <Card>
-        <CardContent>
-          <Suspense
-            fallback={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <CircularProgress size={20} />
-                <Typography>Загружаем данные пользователя..</Typography>
-              </Box>
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <RemoteUserName userId={userId} locale={locale} />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showAdditional}
+                onChange={(event) => setShowAdditional(event.target.checked)}
+              />
             }
-          >
-            <RemoteUserName userId={userId} locale={locale} />
-          </Suspense>
+            label="Показать дополнительную панель"
+            sx={{ alignSelf: 'flex-start' }}
+          />
+          {showAdditional && (
+            <RemoteUserName userId={userId} locale={locale} showAdditional />
+          )}
         </CardContent>
       </Card>
     </Box>

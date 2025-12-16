@@ -1,6 +1,17 @@
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { Link } from '@modern-js/runtime/router';
 
+const users = [
+  { id: '1', label: 'Alice' },
+  { id: '2', label: 'Bob' },
+  { id: '3', label: 'Charlie' },
+];
+
+const locales = [
+  { code: 'en', label: 'English' },
+  { code: 'ru', label: 'Русский' },
+];
+
 const Index = () => (
   <Box
     sx={{
@@ -14,26 +25,38 @@ const Index = () => (
       Host приложение запущено
     </Typography>
     <Typography variant="body1">
-      Это главная страница оркестратора. Перейдите к списку пользователей, чтобы
-      увидеть, как подтягиваются компоненты из remote приложения.
+      Выберите профиль и локаль — так проще воспроизвести утечку кеша между
+      запросами и увидеть, как remote сохраняет состояние на процесс.
     </Typography>
-    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-      <Button
-        variant="contained"
-        component={Link}
-        to="/users/1"
-        sx={{ textTransform: 'none' }}
-      >
-        Открыть /users/1
-      </Button>
-      <Button
-        variant="outlined"
-        component={Link}
-        to="/users/2"
-        sx={{ textTransform: 'none' }}
-      >
-        Открыть /users/2
-      </Button>
+    <Stack spacing={3} sx={{ width: '100%' }}>
+      {users.map((user) => (
+        <Box
+          key={user.id}
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 1,
+            p: 2,
+          }}
+        >
+          <Typography fontWeight={600} sx={{ mb: 1 }}>
+            Пользователь {user.label} (id: {user.id})
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            {locales.map((locale) => (
+              <Button
+                key={locale.code}
+                component={Link}
+                to={`/users/${user.id}?locale=${locale.code}`}
+                variant={locale.code === 'en' ? 'contained' : 'outlined'}
+                sx={{ textTransform: 'none' }}
+              >
+                {locale.label} версия
+              </Button>
+            ))}
+          </Stack>
+        </Box>
+      ))}
     </Stack>
   </Box>
 );

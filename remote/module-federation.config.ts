@@ -11,7 +11,6 @@ export default moduleFederationPlugin({
     filename: 'remoteEntry.js',
     exposes: {
       './UserName': './src/components/UserName.tsx',
-      './UserAdditionalInfo': './src/components/UserAdditionalInfo.tsx',
     },
     shared: sharedDependencies,
   },

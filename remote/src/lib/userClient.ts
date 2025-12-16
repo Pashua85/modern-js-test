@@ -4,6 +4,7 @@ const DB: Record<string, [string, string]> = {
   '3': ['Charlie', 'Чарли'],
 };
 const UNKNOWN_TRANSLATION: [string, string] = ['Unknown', 'Unknown'];
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export class UserClient {
   private cache = new Map<string, string>();
@@ -12,8 +13,8 @@ export class UserClient {
     const cached = this.cache.get(userId);
     if (cached) return cached;
 
-    // детерминированная "I/O"
-    await Promise.resolve();
+    // эмулируем медленную I/O для наглядного кеширования
+    await delay(2000);
     const translations = DB[userId] ?? UNKNOWN_TRANSLATION;
     const name = lang === 'en' ? translations[0] : translations[1];
 

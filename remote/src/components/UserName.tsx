@@ -1,8 +1,16 @@
+import { Suspense } from 'react';
+import { Box, Typography } from '@mui/material';
 import { getUserName } from '@/services/userService';
+import UserNameLoading from './UserNameLoading';
 
 const resolvedNames = new Map<string, string>();
 const pendingRequests = new Map<string, Promise<string>>();
 
+/**
+ * Ручная реализация «ресурса» для React Suspense:
+ * возвращает закэшированное значение или бросает Promise загрузки,
+ * чтобы Suspense показал fallback и повторил рендер после завершения.
+ */
 function readUserName(userId: string, locale: string) {
   const cacheKey = `${userId}:${locale}`;
 
@@ -28,18 +36,45 @@ function readUserName(userId: string, locale: string) {
 type UserNameProps = {
   userId: string;
   locale: string;
+  showAdditional?: boolean;
 };
 
-const UserName = ({ userId, locale }: UserNameProps) => {
+
+const UserNameContent = ({ userId, locale, showAdditional }: UserNameProps) => {
   const name = readUserName(userId, locale);
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: 12 }}>
-      <div>Requested userId: <b>{userId}</b></div>
-      <div>Requested locale: <b>{locale}</b></div>
-      <div>Resolved name: <b>{name}</b></div>
-    </div>
+    <Box
+      sx={{
+        border: '1px solid',
+        borderColor: 'divider',
+        p: 2,
+        borderRadius: 1,
+        bgcolor: 'background.default',
+      }}
+    >
+      {showAdditional && (
+        <>
+          <Typography>
+            Requested userId: <b>{userId}</b>
+          </Typography>
+          <Typography>
+            Requested locale: <b>{locale}</b>
+          </Typography>
+        </>
+      )}
+
+      <Typography sx={{ mt: 1, fontWeight: 600 }}>
+        Resolved name: {name}
+      </Typography>
+    </Box>
   );
 };
+
+const UserName = (props: UserNameProps) => (
+  <Suspense fallback={<UserNameLoading />}>
+    <UserNameContent {...props} />
+  </Suspense>
+);
 
 export default UserName;
