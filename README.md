@@ -1,4 +1,4 @@
-# Modern JS SSR Cache Leak Demo
+# Modern JS Test Task
 
 ## Требования
 
