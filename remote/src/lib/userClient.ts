@@ -10,18 +10,23 @@ export class UserClient {
   private cache = new Map<string, string>();
   private pending = new Map<string, Promise<string>>();
 
+  private key(userId: string, lang: string) {
+    return `${userId}:${lang}`;
+  }
+
   async getUserName(userId: string, lang: string) {
-    const cached = this.cache.get(userId);
+    const cacheKey = this.key(userId, lang);
+    const cached = this.cache.get(cacheKey);
     if (cached) return cached;
 
-    let pending = this.pending.get(userId);
+    let pending = this.pending.get(cacheKey);
     if (!pending) {
       pending = this.loadUserName(userId, lang).then((name) => {
-        this.pending.delete(userId);
-        this.cache.set(userId, name);
+        this.pending.delete(cacheKey);
+        this.cache.set(cacheKey, name);
         return name;
       });
-      this.pending.set(userId, pending);
+      this.pending.set(cacheKey, pending);
     }
 
     return pending;
