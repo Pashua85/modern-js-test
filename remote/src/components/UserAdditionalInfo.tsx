@@ -54,6 +54,9 @@ const UserAdditionalInfo = ({
         bgcolor: 'background.default',
       }}
     >
+      <Typography variant='h4'>
+        Additional Info
+      </Typography>
       <Typography>
         Requested userId: <b>{userId}</b>
       </Typography>

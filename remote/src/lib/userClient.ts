@@ -10,8 +10,8 @@ export class UserClient {
   private cache = new Map<string, string>();
 
   async getUserName(userId: string, lang: string) {
-    // const cached = this.cache.get(userId);
-    // if (cached) return cached;
+    const cached = this.cache.get(userId);
+    if (cached) return cached;
 
     // эмулируем медленную I/O для наглядного кеширования
     await delay(2000);
