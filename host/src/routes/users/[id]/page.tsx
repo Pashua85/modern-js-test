@@ -1,4 +1,4 @@
-import { lazy, useState } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { Link, useParams, useSearchParams } from '@modern-js/runtime/router';
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   CardContent,
   Switch,
   FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 
 const RemoteUserName = lazy(() => import('remote/UserName'));
@@ -38,7 +39,18 @@ const UsersPage = () => {
       </Box>
       <Card>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <RemoteUserName userId={userId} locale={locale} />
+          <Suspense
+            fallback={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CircularProgress size={18} />
+                <Typography variant="body2">
+                  Загружаем данные из remote...
+                </Typography>
+              </Box>
+            }
+          >
+            <RemoteUserName userId={userId} locale={locale} />
+          </Suspense>
           <FormControlLabel
             control={
               <Switch
@@ -50,7 +62,18 @@ const UsersPage = () => {
             sx={{ alignSelf: 'flex-start' }}
           />
           {showAdditional && (
-            <RemoteUserName userId={userId} locale={locale} showAdditional />
+            <Suspense
+              fallback={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <CircularProgress size={18} />
+                  <Typography variant="body2">
+                    Загружаем дополнительную панель...
+                  </Typography>
+                </Box>
+              }
+            >
+              <RemoteUserName userId={userId} locale={locale} showAdditional />
+            </Suspense>
           )}
         </CardContent>
       </Card>

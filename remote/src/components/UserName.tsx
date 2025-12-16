@@ -1,7 +1,5 @@
-import { Suspense } from 'react';
 import { Box, Typography } from '@mui/material';
 import { getUserName } from '@/services/userService';
-import UserNameLoading from './UserNameLoading';
 
 const resolvedNames = new Map<string, string>();
 const pendingRequests = new Map<string, Promise<string>>();
@@ -39,8 +37,7 @@ type UserNameProps = {
   showAdditional?: boolean;
 };
 
-
-const UserNameContent = ({ userId, locale, showAdditional }: UserNameProps) => {
+const UserName = ({ userId, locale, showAdditional }: UserNameProps) => {
   const name = readUserName(userId, locale);
 
   return (
@@ -70,11 +67,5 @@ const UserNameContent = ({ userId, locale, showAdditional }: UserNameProps) => {
     </Box>
   );
 };
-
-const UserName = (props: UserNameProps) => (
-  <Suspense fallback={<UserNameLoading />}>
-    <UserNameContent {...props} />
-  </Suspense>
-);
 
 export default UserName;
