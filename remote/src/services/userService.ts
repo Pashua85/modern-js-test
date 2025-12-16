@@ -7,3 +7,11 @@ export async function getUserName(
 ) {
   return client.getUserName(userId, lang);
 }
+
+export function peekUserName(
+  client: UserClient,
+  userId: string,
+  lang: string,
+) {
+  return client.peekUserName(userId, lang);
+}
