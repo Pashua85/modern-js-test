@@ -7,10 +7,7 @@ const users = [
   { id: '3', label: 'Charlie' },
 ];
 
-const locales = [
-  { code: 'en', label: 'English' },
-  { code: 'ru', label: 'Русский' },
-];
+const locales = [{ code: 'en', label: 'English' }];
 
 const Index = () => (
   <Box

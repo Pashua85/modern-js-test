@@ -6,19 +6,18 @@ import {
   Button,
   Card,
   CardContent,
-  Switch,
-  FormControlLabel,
   CircularProgress,
 } from '@mui/material';
+import { AdditionalInfoBlock } from '@/components/AdditionalInfoBlock';
 
 const RemoteUserName = lazy(() => import('remote/UserName'));
+
 
 const UsersPage = () => {
   const params = useParams<{ id?: string }>();
   const userId = params?.id ?? 'unknown';
   const [searchParams] = useSearchParams();
   const locale = searchParams.get('locale') ?? 'en';
-  const [showAdditional, setShowAdditional] = useState(false);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -51,30 +50,7 @@ const UsersPage = () => {
           >
             <RemoteUserName userId={userId} locale={locale} />
           </Suspense>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={showAdditional}
-                onChange={(event) => setShowAdditional(event.target.checked)}
-              />
-            }
-            label="Показать дополнительную панель"
-            sx={{ alignSelf: 'flex-start' }}
-          />
-          {showAdditional && (
-            <Suspense
-              fallback={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CircularProgress size={18} />
-                  <Typography variant="body2">
-                    Загружаем дополнительную панель...
-                  </Typography>
-                </Box>
-              }
-            >
-              <RemoteUserName userId={userId} locale={locale} showAdditional />
-            </Suspense>
-          )}
+          <AdditionalInfoBlock userId={userId} locale={locale} />
         </CardContent>
       </Card>
     </Box>

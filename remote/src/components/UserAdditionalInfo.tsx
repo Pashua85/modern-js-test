@@ -31,12 +31,17 @@ function readUserName(userId: string, locale: string) {
   throw pending;
 }
 
-type UserNameProps = {
+type UserAdditionalInfoProps = {
   userId: string;
   locale: string;
+  showAdditional?: boolean;
 };
 
-const UserName = ({ userId, locale }: UserNameProps) => {
+const UserAdditionalInfo = ({
+  userId,
+  locale,
+  showAdditional,
+}: UserAdditionalInfoProps) => {
   const name = readUserName(userId, locale);
 
   return (
@@ -49,6 +54,12 @@ const UserName = ({ userId, locale }: UserNameProps) => {
         bgcolor: 'background.default',
       }}
     >
+      <Typography>
+        Requested userId: <b>{userId}</b>
+      </Typography>
+      <Typography>
+        Requested locale: <b>{locale}</b>
+      </Typography>
       <Typography sx={{ mt: 1, fontWeight: 600 }}>
         Resolved name: {name}
       </Typography>
@@ -56,4 +67,4 @@ const UserName = ({ userId, locale }: UserNameProps) => {
   );
 };
 
-export default UserName;
+export default UserAdditionalInfo;
