@@ -43,7 +43,7 @@ const UsersPage = () => {
             fallback={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <CircularProgress size={20} />
-                <Typography>Загружаем данные пользователя...</Typography>
+                <Typography>Загружаем данные пользователя..</Typography>
               </Box>
             }
           >
