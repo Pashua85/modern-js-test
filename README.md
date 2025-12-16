@@ -31,4 +31,4 @@ yarn dev
 - если снова вернуться на предыдущую вкладку и ее перезагрузить, то там сначала отобразится русскоязычное имя несмотря на locale в роуте, а затем будет warning в консоли:
 
 
-![Hydration warning](images/WARNINT_SCREEN.png)
+![Hydration warning](images/WARNING_SCREEN.png)
