@@ -32,4 +32,3 @@ yarn dev
 
 
 ![Hydration warning](images/WARNINT_SCREEN.png)
-
