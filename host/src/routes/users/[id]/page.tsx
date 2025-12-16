@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Link, useParams } from '@modern-js/runtime/router';
+import { Link, useParams, useSearchParams } from '@modern-js/runtime/router';
 import {
   Box,
   Typography,
@@ -14,6 +14,8 @@ const RemoteUserName = lazy(() => import('remote/UserName'));
 const UsersPage = () => {
   const params = useParams<{ id?: string }>();
   const userId = params?.id ?? 'unknown';
+  const [searchParams] = useSearchParams();
+  const locale = searchParams.get('locale') ?? 'en';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -45,7 +47,7 @@ const UsersPage = () => {
               </Box>
             }
           >
-            <RemoteUserName userId={userId} />
+            <RemoteUserName userId={userId} locale={locale} />
           </Suspense>
         </CardContent>
       </Card>

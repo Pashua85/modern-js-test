@@ -6,7 +6,8 @@ declare module 'remote/UserName' {
   import type { ComponentType } from 'react';
 
   const UserName: ComponentType<{
-    userId?: string;
+    userId: string;
+    locale: string;
   }>;
 
   export default UserName;

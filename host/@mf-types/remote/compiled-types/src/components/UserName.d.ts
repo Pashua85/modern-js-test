@@ -1,5 +1,6 @@
 type UserNameProps = {
     userId: string;
+    locale: string;
 };
-declare const UserName: ({ userId }: UserNameProps) => import("react").JSX.Element;
+declare const UserName: ({ userId, locale }: UserNameProps) => import("react").JSX.Element;
 export default UserName;
